@@ -180,6 +180,7 @@ contract CrowdFunding {
             if (peticionesDeGasto[index].votosRealizados/2 < peticionesDeGasto[index].votosPositivos) {
 
                 peticionesDeGasto[index].estado = EstadoPeticion.Aprobada;
+                peticionesDeGasto[index].walletDestinatario.transfer(peticionesDeGasto[index].importe);
                 emit ResolucionPeticionGasto(index, true);
 
             } else {
