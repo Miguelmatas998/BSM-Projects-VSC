@@ -1,0 +1,24 @@
+
+<div *ngIf="!wallet.address">
+  <form [formGroup]="loginForm" (ngSubmit)="sendLogin(loginForm.value)">
+    <div *ngIf="!encrypted">
+      <textarea formControlName="seeds" rows="4" placeholder="Seeds"></textarea>
+    </div>
+    <div>
+      <input formControlName="password" type="password" placeholder="Password" />
+    </div>
+    <button type="submit">Login with seeds</button>
+    <button type="button" (click)="loginMetamask()">Login con Metamask</button>
+  </form>
+</div>
+
+<div *ngIf="wallet.address">
+  <h1>Wallet</h1>
+  <h2>{{ wallet.address }}</h2>
+
+  <h1>Enviar Tx</h1>
+  <form [formGroup]="sendForm" (ngSubmit)="sendTx(sendForm.value)">
+    <input formControlName="address" type="text" placeholder="Address" />
+    <button type="submit">Send</button>
+  </form>
+</div>
