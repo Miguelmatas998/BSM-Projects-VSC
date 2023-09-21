@@ -32,6 +32,8 @@ export class AppComponent {
 
   tokensForm: any;
 
+  mintForm: any;
+
   lastTransaction: any;
 
   web3: any;
@@ -60,6 +62,12 @@ export class AppComponent {
 
     // SEND TOKENS
     this.tokensForm = formBuilder.group({
+      address: "",
+      amount: ""
+    });
+
+    // MINT TOKENS
+    this.mintForm = formBuilder.group({
       address: "",
       amount: ""
     });
@@ -151,6 +159,39 @@ export class AppComponent {
       gasLimit: this.web3.utils.toHex(1000000),
       nonce: await this.web3.eth.getTransactionCount(this.wallet.address),
       data: this.contract.methods.transfer(sendData.address, sendData.amount).encodeABI()
+    };
+
+    var signed = await this.web3.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
+
+    this.web3.eth.sendSignedTransaction(signed.rawTransaction).then(
+        (receipt: any) => {
+          this.lastTransaction = receipt;
+        },
+        (error: any) => {
+            console.log(error)
+        }
+    );
+  }
+
+  //Código de la función para mintear tokens
+
+  async mintTokens(sendData:any) {
+    if ( ! util.isValidAddress(sendData.address)) {
+      return alert('Dirección no es válida');
+    }
+
+    if (sendData.amount == '') {
+      return alert('Campos obligatorios');
+    }
+
+    var rawData = {
+      from: this.wallet.address,
+      to: this.contractAddress,
+      value: 0,
+      gasPrice: this.web3.utils.toHex(10000000000),
+      gasLimit: this.web3.utils.toHex(1000000),
+      nonce: await this.web3.eth.getTransactionCount(this.wallet.address),
+      data: this.contract.methods.mint(sendData.address, sendData.amount).encodeABI()
     };
 
     var signed = await this.web3.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
