@@ -1,0 +1,54 @@
+
+<div *ngIf="!wallet.address">
+    <form [formGroup]="loginForm" (ngSubmit)="sendLogin(loginForm.value)">
+      <div *ngIf="!encrypted">
+        <textarea formControlName="seeds" rows="4" placeholder="Seeds"></textarea>
+      </div>
+      <div>
+        <input formControlName="password" type="password" placeholder="Password" />
+      </div>
+      <button type="submit">Login with seeds</button>
+      <button type="button" (click)="loginMetamask()">Login con Metamask</button>
+    </form>
+  </div>
+  
+  <div *ngIf="wallet.address">
+    <h1>Wallet</h1>
+    <h2>{{ wallet.address }}</h2>
+    <h3>{{ balanceOfTokens }} TOKENS</h3>
+  
+    <h1>Enviar Tx</h1>
+    <form [formGroup]="sendForm" (ngSubmit)="sendTx(sendForm.value)">
+      <input formControlName="address" type="text" placeholder="Address" />
+      <button type="submit">Send Tx</button>
+    </form>
+  
+    <h1>Mint Tokens</h1>
+    <form [formGroup]="mintForm" (ngSubmit)="mintTokens(mintForm.value)">
+      <div>
+        <input formControlName="address" type="text" placeholder="Address" />
+      </div>
+      <div>
+        <input formControlName="amount" type="number" placeholder="Amount" />
+      </div>
+      <button type="submit">Mint Tokens</button>
+    </form>
+  
+    <h1>Enviar Tokens</h1>
+    <form [formGroup]="tokensForm" (ngSubmit)="sendTokens(tokensForm.value)">
+      <div>
+        <input formControlName="address" type="text" placeholder="Address" />
+      </div>
+      <div>
+        <input formControlName="amount" type="number" placeholder="Amount" />
+      </div>
+      <button type="submit">Send Tokens</button>
+    </form>
+  
+    <div *ngIf="lastTransaction">
+      <h1>Última Transacción de Tokens</h1>
+      <p><a href="https://sepolia.etherscan.io/tx/{{ lastTransaction.transactionHash }}">Ver en Etherscan</a></p>
+    </div>
+  
+  </div>
+  
