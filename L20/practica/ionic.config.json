@@ -1,7 +1,0 @@
-{
-  "name": "practica",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "angular"
-}
